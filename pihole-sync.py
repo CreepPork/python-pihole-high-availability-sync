@@ -9,6 +9,7 @@ HA_MASTER_PIHOLE_DIR = '/home/ubuntu/pihole'
 HA_SSH_SECONDARY_IP = '10.10.10.2'
 HA_SSH_SECONDARY_USER = 'ubuntu'
 HA_SECONDARY_PIHOLE_DIR = '/home/pi/hole'
+HA_SECONDARY_DOCKER_CONTAINER_NAME = 'pihole'
 
 
 def main():
@@ -30,6 +31,9 @@ def main():
             os.path.join(HA_SECONDARY_PIHOLE_DIR, 'custom.list.temp'),
             os.path.join(HA_SECONDARY_PIHOLE_DIR, 'etc-pihole/custom.list')
         ))
+
+        send_ssh_command(
+            f'docker exec -it {HA_SECONDARY_DOCKER_CONTAINER_NAME} sh -c "pihole restartdns reload"')
     else:
         print('Remote custom.list is up-to-date.')
 
